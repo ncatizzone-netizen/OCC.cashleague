@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&display=swap">
 <style>
 :root{
-  --navy:#2b3743; --navy-d:#1f2830; --red:#963b33; --red-d:#7c2f29;
+  --navy:#2b3743; --navy-d:#1f2830; --red:#7c2f29; --red-d:#5f2420; --red-text:#7c2f29;
   --bg:#f2f4f7; --surface:#ffffff; --text:#1c2733; --muted:#5d6b7b; --line:#dbe1e8;
   --row-alt:#f7f9fb; --ok:#1d7a46; --warn:#a15c00; --bad-bg:#fdecec; --ok-bg:#e8f5ee; --chip:#e9eef5;
   --link:#12294d; --input-bg:#ffffff; --shadow:0 1px 3px rgba(10,25,50,.12);
@@ -25,14 +25,14 @@
     --bg:#0e1622; --surface:#162231; --text:#e8edf3; --muted:#9aa8b8; --line:#2a3b4f;
     --row-alt:#1a2839; --bad-bg:#3a1c20; --ok-bg:#16301f; --chip:#22334a; --link:#9cc0f5;
     --input-bg:#0f1b2a; --head-bg:#11202f; --top-bg:#070f1c; --shadow:0 1px 3px rgba(0,0,0,.5);
-    --red:#d2434c; --ok:#58c485; --warn:#e0a24a; color-scheme:dark;
+    --red:#7c2f29; --red-text:#e8938b; --ok:#58c485; --warn:#e0a24a; color-scheme:dark;
   }
 }
 :root[data-theme="dark"]{
   --bg:#0e1622; --surface:#162231; --text:#e8edf3; --muted:#9aa8b8; --line:#2a3b4f;
   --row-alt:#1a2839; --bad-bg:#3a1c20; --ok-bg:#16301f; --chip:#22334a; --link:#9cc0f5;
   --input-bg:#0f1b2a; --head-bg:#11202f; --top-bg:#070f1c; --shadow:0 1px 3px rgba(0,0,0,.5);
-  --red:#d2434c; --ok:#58c485; --warn:#e0a24a; color-scheme:dark;
+  --red:#7c2f29; --red-text:#e8938b; --ok:#58c485; --warn:#e0a24a; color-scheme:dark;
 }
 *,*::before,*::after{box-sizing:border-box}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
@@ -73,7 +73,7 @@ nav.main ul ul a:hover{background:var(--row-alt)}
 }
 
 /* hero */
-.hero{background:linear-gradient(135deg,#963b33 0%,#7c2f29 100%);color:#fff;position:relative;overflow:hidden}
+.hero{background:var(--red);color:#fff;position:relative;overflow:hidden}
 .hero .wrap{position:relative;display:flex;flex-wrap:wrap;align-items:center;gap:12px 32px;padding-top:0;padding-bottom:0;z-index:1}
 .hero .htext{flex:1 1 260px;padding:18px 0}
 .hero svg.rings{position:absolute;right:-70px;top:50%;transform:translateY(-50%);width:420px;height:420px;opacity:.28}
@@ -89,7 +89,7 @@ nav.main ul ul a:hover{background:var(--row-alt)}
 .tabs .wrap{display:flex;flex-wrap:wrap;gap:0 4px}
 .tabs a{font-family:"Montserrat","Segoe UI",Roboto,Helvetica,Arial,sans-serif;padding:14px 18px;text-decoration:none;color:var(--muted);font-weight:700;font-size:14px;white-space:nowrap;border-bottom:3px solid transparent;margin-bottom:-1px}
 .tabs a:hover{color:var(--text)}
-.tabs a.cur{color:var(--red);border-bottom-color:var(--red)}
+.tabs a.cur{color:var(--red-text);border-bottom-color:var(--red)}
 
 main{padding:26px 0 46px;min-height:50vh}
 .card{background:var(--surface);border:1px solid var(--line);border-radius:6px;box-shadow:var(--shadow);margin-bottom:22px}
@@ -203,6 +203,28 @@ label.radio input{width:auto}
 .ctr .win{color:#7fe3a9}
 .ctr td .sc{background:rgba(127,227,169,.18);color:#7fe3a9}
 .ctr .tag.lock{background:#4a3a14;color:#f3cf8c}
+.sched .gn{color:var(--red);font-weight:800;font-size:17px;text-transform:uppercase;letter-spacing:.8px}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .sched .gn,:root:not([data-theme="light"]) .sched .rg{background:#fff;border-radius:6px;padding:1px 9px}}
+:root[data-theme="dark"] .sched .gn,:root[data-theme="dark"] .sched .rg{background:#fff;border-radius:6px;padding:1px 9px}
+.drawband{background:var(--red);color:#fff;font-weight:800;font-size:17px;text-transform:uppercase;letter-spacing:.8px;padding:11px 14px;text-align:center}
+.gboxes{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));padding:16px}
+.gbox{border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--surface);box-shadow:var(--shadow);display:flex;flex-direction:column}
+.gbox.done{border-color:var(--ok)}
+.gbox .gtop{display:flex;justify-content:space-between;align-items:center;background:var(--navy);color:#fff;padding:9px 14px;font-weight:700}
+.gbox .gval{background:rgba(255,255,255,.16);border-radius:999px;padding:2px 11px;font-size:14px}
+.gbox .gbody{padding:14px 12px;text-align:center;flex:1}
+.gbox .gsheet{display:inline-block;background:var(--chip);border-radius:999px;padding:2px 12px;font-size:12px;font-weight:700;margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px}
+.gbox .side{font-weight:700;font-size:17px;padding:4px 0}
+.gbox .side.won{color:var(--ok)}
+.gbox .gvs{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:1.5px;margin:2px 0}
+.gbox .gso{margin-top:8px;font-size:12px;color:var(--warn);font-weight:700}
+.gbox .gfoot{background:var(--row-alt);border-top:1px solid var(--line);color:var(--muted);font-size:12px;text-align:center;padding:7px 8px}
+.gboxes{grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;padding:14px 12px}
+.gbox .gtop{padding:8px 10px;font-size:14px}
+.gbox .gbody{padding:12px 8px}
+.gbox .side{font-size:15px;overflow-wrap:anywhere}
+.gbox .gfoot{font-size:11px;padding:6px 6px}
+@media (max-width:900px){.gboxes{grid-template-columns:repeat(auto-fit,minmax(165px,1fr))}}
 </style>
 </head>
 <body>
@@ -244,7 +266,7 @@ const NAV = [
   {t:"About the Club", u:BASE+"/about-the-club", k:[["Contact Us","/about-the-club/contact-us-basic"],["News","/about-the-club/news"],["Parking","/about-the-club/parking"],["Club Sponsors","/about-the-club/club-sponsors"],["Life Members","/about-the-club/life-members"]]}
 ];
 const VIEWS = [["standings","Leaderboard"],["schedule","Schedule"],["report","Report a Score"],["admin","Admin"]];
-// Paste the Web app URL from your Apps Script deployment between the quotes.
+// Your Apps Script web app address. Replace it only if you create a new deployment.
 const API_URL = "https://script.google.com/macros/s/AKfycbx0xuS68eZb8i4W4P085wRxgBZAfBEi0lsaLGv6dWXfNaSZ96GbY2zigCjmm1PkXYZL/exec";
 const DEFAULT_CFG = { name:"Wednesday Cash League", season:"2026–27", startDate:"2026-10-07", weeks:20, sheets:5 };
 const TIMES = ["5:00 PM","7:00 PM","9:00 PM"];
@@ -384,7 +406,7 @@ function viewStandings(){
     latest=`<div class="card ctr"><div class="hd"><h2>Week ${lastW} results</h2><span class="sub">${esc(fmtLong(weekDate(lastW)))}</span></div><div class="scroll"><table>
       <thead><tr><th>Game</th><th>Time</th><th>Matchup</th><th class="n">Value</th></tr></thead><tbody>${gs.map(g=>matchRow(g,true)).join("")}</tbody></table></div></div>`;
   }
-  return banner()+`<div class="card ctr"><div class="hd"><h2>Leaderboard</h2><span class="sub">${lastW?`Through week ${lastW} · `:""}Winners collect the game value · shootout games are split evenly</span></div>
+  return banner()+`<div class="card ctr"><div class="hd"><h2>Leaderboard</h2></div>
     <div class="scroll"><table><thead><tr><th>#</th><th>Team</th><th class="n">GP</th><th class="n">W</th><th class="n">L</th><th class="n hide-s">SO W</th><th class="n">Winnings</th></tr></thead><tbody>${body}</tbody></table></div>
     ${decided.length?"":`<div class="bd sub">No results yet.</div>`}</div>${latest}`;
 }
@@ -393,9 +415,16 @@ function matchRow(g,compact){
   let score="";
   if(r.sw!=null&&r.sl!=null&&w&&sl[0].id&&sl[1].id){ const s0=w===sl[0].id?r.sw:r.sl, s1=w===sl[1].id?r.sw:r.sl; score=` <span class="sc">${s0} – ${s1}</span>`; }
   const m=`${slotHTML(sl[0],w&&sl[0].id===w)} <span class="sub">vs</span> ${slotHTML(sl[1],w&&sl[1].id===w)}${r.so?` <span class="tag lock">SO</span>`:""}${score}${w&&r.locked&&!compact?` <span class="tag lock">Final</span>`:""}`;
-  if(compact) return `<tr><td>${g.num}</td><td>${esc(g.time)}</td><td>${m}</td><td class="n">${money(g.value)}</td></tr>`;
-  return `<tr><td>${g.num}</td><td>${g.sheet||""}</td><td>${m}</td><td class="n">${money(g.value)}</td>
+  if(compact) return `<tr><td class="gn">${g.num}</td><td>${esc(g.time)}</td><td>${m}</td><td class="n">${money(g.value)}</td></tr>`;
+  return `<tr><td class="gn">${g.num}</td><td>${g.sheet||""}</td><td>${m}</td><td class="n">${money(g.value)}</td>
     <td class="hide-s sub">Winner to Game ${g.wTo||"—"}<br>Loser to Game ${g.lTo||"—"}</td></tr>`;
+}
+function gameBox(g){
+  const sl=slots(g), w=winnerOf(g), r=S.results[g.id]||{};
+  const side=s=>{ const win=!!(s.id&&w&&s.id===w); return `<div class="side${win?" won":""}">${s.id?(win?"✓ ":"")+esc(tn(s.id)):`<span class="ph">${esc(s.ph)}</span>`}</div>`; };
+  return `<div class="gbox${w?" done":""}"><div class="gtop"><span>Game ${g.num}</span><span class="gval">${money(g.value)}</span></div>
+    <div class="gbody">${g.sheet?`<div class="gsheet">Sheet ${g.sheet}</div>`:""}${side(sl[0])}<div class="gvs">vs</div>${side(sl[1])}${r.so&&w?`<div class="gso">Shootout – winnings split</div>`:""}</div>
+    ${g.wTo||g.lTo?`<div class="gfoot">Winner to Game ${g.wTo||"—"} · Loser to Game ${g.lTo||"—"}</div>`:""}</div>`;
 }
 function viewSchedule(){
   if(!ready()) return banner()+`<div class="card"><div class="bd">Loading schedule…</div></div>`;
@@ -404,8 +433,7 @@ function viewSchedule(){
   if(!gs.length) grid=`<div class="bd"><p>The draw for this week hasn’t been posted yet.</p></div>`;
   else {
     const times=[...new Set(gs.map(g=>g.time))].sort((a,b)=>tmin(a)-tmin(b));
-    const body=times.map(t=>`<tr class="grp"><td colspan="5">${esc(t)} draw</td></tr>`+gs.filter(g=>g.time===t).map(g=>matchRow(g,false)).join("")).join("");
-    grid=`<div class="scroll"><table class="grid2"><thead><tr><th>Game</th><th>Sheet</th><th>Matchup</th><th class="n">Value</th><th class="hide-s">Advances</th></tr></thead><tbody>${body}</tbody></table></div>`;
+    grid=times.map(t=>`<div class="drawband">${esc(t)} draw</div><div class="gboxes">${gs.filter(g=>g.time===t).map(gameBox).join("")}</div>`).join("");
   }
   return banner()+`<div class="card sched"><div class="hd"><div><h2>${isNext?(weekDate(w)>todayMid()?"Next week’s schedule":"This week’s schedule"):"Weekly schedule"}</h2><div class="sub">${esc(fmtLong(weekDate(w)))}</div></div>
     <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><button class="btn ghost sm" data-act="sched-prev" ${w<=1?"disabled":""}>← Prev</button>
@@ -419,7 +447,7 @@ function viewReport(){
   else if(!pending.length) body=`<div class="msg ok">All results for week ${w} have been reported. Thank you! If one needs correcting, please contact the league admin.</div>`;
   else body=`<div class="cards">`+pending.map(g=>{
     const sl=slots(g);
-    const head=`<div><b>Game ${g.num}</b> · ${esc(g.time)}${g.sheet?" · Sheet "+g.sheet:""} · ${money(g.value)}</div>`;
+    const head=`<div><b class="gn">Game ${g.num}</b> · ${esc(g.time)}${g.sheet?" · Sheet "+g.sheet:""} · ${money(g.value)}</div>`;
     if(!bothKnown(sl)) return `<div class="gamecard">${head}<div class="where">${slotHTML(sl[0])} <span class="sub">vs</span> ${slotHTML(sl[1])}<br>Opponents aren’t decided yet.</div></div>`;
     const cur=winnerOf(g), r=S.results[g.id]||{};
     return `<div class="gamecard">${head}
@@ -517,7 +545,7 @@ function adminResults(){
   const w=S.adminResWeek, gs=gamesFor(w);
   return `<div class="card"><div class="hd"><h2>Results</h2><select data-bind="adminResWeek" style="width:auto">${weekOptions(w)}</select></div>
     ${gs.length?`<div class="scroll"><table><thead><tr><th>Game</th><th>Matchup / winner</th><th>Shootout</th><th></th></tr></thead><tbody>
-    ${gs.map(g=>{const sl=slots(g), r=S.results[g.id]||{}, ok=bothKnown(sl);return `<tr><td>${g.num}<div class="sub">${esc(g.time)}</div></td>
+    ${gs.map(g=>{const sl=slots(g), r=S.results[g.id]||{}, ok=bothKnown(sl);return `<tr><td><span class="gn">${g.num}</span><div class="sub">${esc(g.time)}</div></td>
       <td class="edit">${ok?`<select data-rw="${g.id}"><option value="">— no result —</option>${sl.map(s=>`<option value="${esc(s.id)}" ${r.winner===s.id?"selected":""}>${esc(tn(s.id))} won</option>`).join("")}</select>`:`<span class="ph">${esc(sl[0].id?tn(sl[0].id):sl[0].ph)} vs ${esc(sl[1].id?tn(sl[1].id):sl[1].ph)}</span>`}</td>
       <td><input type="checkbox" style="width:auto" data-rso="${g.id}" ${r.so?"checked":""} aria-label="Shootout"></td>
       <td style="white-space:nowrap">${ok?`<button class="btn sm" data-act="save-result" data-gid="${g.id}">Save</button> <button class="btn ghost sm" data-act="clear-result" data-gid="${g.id}">Clear</button>`:""}</td></tr>`}).join("")}

@@ -436,6 +436,15 @@ body,main,body[data-view="report"],body[data-view="report"] main{background:#162
  .lstand .bv{font-size:12px;padding:2px 5px}
  .lmove{font-size:12px}
 }
+@media (max-width:760px){
+ .lcols.lstand,.lrow.lstand{grid-template-columns:36px minmax(0,1fr) 26px 24px 24px 34px 38px 64px}
+ .lcols.lstand>*,.lrow.lstand>*,.lstand .lstats>*{justify-self:center;align-self:center;text-align:center}
+ .lstand .lteam{justify-self:stretch}
+ .lstand .lg{justify-content:center;width:100%}
+ .lstand .bg{padding:2px 6px}
+ .lstand .lv{width:100%;text-align:center}
+ .lcols.lstand>div{width:100%;text-align:center;overflow:visible}
+}
 </style>
 </head>
 <body>

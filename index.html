@@ -396,6 +396,15 @@ body,main,body[data-view="report"],body[data-view="report"] main{background:#162
 .cards{grid-template-columns:repeat(auto-fill,minmax(280px,340px));justify-content:center;align-items:stretch}
 .gamecard{min-height:300px;display:flex;flex-direction:column}
 .gamecard .actions{margin-top:auto;padding-top:12px}
+.resgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:start}
+.rescol{display:grid;gap:6px;min-width:0}
+@media (min-width:1001px){
+ .rescol .lcols,.rescol .lres{grid-template-columns:72px minmax(0,1fr) 88px;gap:8px}
+ .rescol .lm{flex-wrap:nowrap;gap:6px}
+ .ctr .rescol .lres .lt{flex:1 1 0;width:auto;min-width:0;max-width:none;font-size:14px;padding:0 6px;height:auto;min-height:38px}
+ .rescol .lvs{font-size:10px}
+}
+@media (max-width:1000px){.resgrid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -600,8 +609,9 @@ function resultsCard(){
   const decided=Object.values(S.games).filter(g=>winnerOf(g));
   const wks=[...new Set(decided.map(g=>g.week))].sort((a,b)=>a-b), lastW=wks.length?wks[wks.length-1]:null;
   if(!lastW) return "";
-  const gs=gamesFor(lastW);
-  return `<div class="card ctr"><div class="hd"><h2>Week ${lastW} results</h2><span class="sub">${esc(fmtLong(weekDate(lastW)))}</span></div><div class="boardwrap"><div class="board"><div class="lcols"><div>Game</div><div class="c">Matchup</div><div class="r">Value</div></div>${gs.map(resultRow).join("")}</div></div></div>`;
+  const gs=gamesFor(lastW), half=Math.ceil(gs.length/2);
+  const col=arr=>`<div class="rescol"><div class="lcols"><div>Game</div><div class="c">Matchup</div><div class="r">Value</div></div>${arr.map(resultRow).join("")}</div>`;
+  return `<div class="card ctr"><div class="hd"><h2>Week ${lastW} results</h2><span class="sub">${esc(fmtLong(weekDate(lastW)))}</span></div><div class="boardwrap"><div class="resgrid">${col(gs.slice(0,half))}${col(gs.slice(half))}</div></div></div>`;
 }
 function viewStandings(){
   if(!ready()) return banner()+`<div class="card"><div class="bd">Loading standings…</div></div>`;

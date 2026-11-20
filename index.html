@@ -228,11 +228,11 @@ label.radio input{width:auto}
 @media (max-width:760px){.lcols{display:none}}
 .ctr .lres{background:#f5f6f3;border-color:#d9dcd3}
 .ctr .lres:nth-child(odd){background:#ffffff}
-.lrow.lstand,.lcols.lstand{grid-template-columns:1fr 2.2fr 3.2fr 1.8fr 1.5fr}
+.lrow.lstand,.lcols.lstand{grid-template-columns:1fr 2.2fr 3.2fr 1.8fr .9fr 1.5fr}
 .lteam{text-align:center;font-weight:700;font-size:17px;min-width:0;overflow-wrap:anywhere}
 .ln{text-align:center;font-weight:700;font-size:16px}
 @media (max-width:760px){
- .lrow.lstand,.lcols.lstand{grid-template-columns:46px minmax(0,1fr) 78px 84px;grid-template-areas:none;gap:8px;padding-left:12px;padding-right:10px}
+ .lrow.lstand,.lcols.lstand{grid-template-columns:46px minmax(0,1fr) 78px 46px 84px;grid-template-areas:none;gap:8px;padding-left:12px;padding-right:10px}
  .lcols.lstand{display:grid}
  .lstand .lg,.lstand .lv{grid-area:auto}
  .lstand .hide-s{display:none}
@@ -386,6 +386,13 @@ body,main,body[data-view="report"],body[data-view="report"] main{background:#162
 .sched .lt{box-sizing:border-box;display:flex;align-items:center;justify-content:center;text-align:center;width:200px;min-width:200px;max-width:200px;height:38px;padding:0 10px;line-height:1.15;overflow:hidden;font-size:15px}
 .sched .lt.won{padding:0 10px}
 @media (max-width:760px){.sched .lt{width:auto;min-width:0;max-width:none;flex:1 1 0;height:auto;min-height:38px;padding:4px 8px}}
+.ctr .lres .lm{justify-content:center;align-items:center;gap:8px 12px}
+.ctr .lres .lt{box-sizing:border-box;display:flex;align-items:center;justify-content:center;text-align:center;width:200px;min-width:200px;max-width:200px;height:38px;padding:0 10px;line-height:1.15;overflow:hidden;font-size:15px;border:2px solid #cfd2c8;border-radius:6px;background:#ffffff;color:#10120d}
+.ctr .lres .lt.won{background:#2e9e5b;border-color:#2e9e5b;color:#ffffff;font-weight:700;border-radius:6px;padding:0 10px}
+.ctr .lres .lt.lost{color:#a3a79a;border-color:#e3e5dd;font-weight:600}
+@media (max-width:760px){.ctr .lres .lt{width:auto;min-width:0;max-width:none;flex:1 1 0;height:auto;min-height:38px;padding:4px 8px}}
+.lmove{text-align:center;font-weight:700;font-size:15px;white-space:nowrap}
+.lmove.up{color:#1d7a46}.lmove.down{color:#d23b2e}.lmove.none{color:#a3a79a;font-weight:400}
 </style>
 </head>
 <body>
@@ -414,6 +421,7 @@ body,main,body[data-view="report"],body[data-view="report"] main{background:#162
 <div id="toast" role="status"></div>
 
 <script>
+
 
 
 
@@ -517,10 +525,11 @@ function slots(g,depth){
 const slotHTML = (s,win) => s.id ? `<span class="${win?"win":""}">${win?"✓ ":""}${esc(tn(s.id))}</span>` : `<span class="ph">${esc(s.ph)}</span>`;
 const bothKnown = sl => sl[0].id && sl[1].id;
 
-function standings(){
+function standings(upTo){
   const r={};
   teamList().forEach(t=>r[t.id]={id:t.id,name:t.name,gp:0,w:0,l:0,so:0,won:0,form:[]});
   Object.values(S.games).sort((a,b)=>a.num-b.num).forEach(g=>{
+    if(upTo!=null&&g.week>upTo) return;
     const w=winnerOf(g); if(!w||!r[w]) return;
     const sl=slots(g), ids=sl.map(s=>s.id).filter(Boolean), lo=ids.find(i=>i!==w);
     const val=Number(g.value)||0, so=!!S.results[g.id].so;
@@ -541,11 +550,16 @@ function buildNav(){
   $("#burger").addEventListener("click",()=>{ const o=$("#mainnav").classList.toggle("open"); $("#burger").setAttribute("aria-expanded",o); });
 }
 function curView(){ const h=location.hash.slice(1); return VIEWS.some(v=>v[0]===h)?h:"standings"; }
+function seasonLabel(s){
+  s=String(s||"").trim(); const m=/^(\d{4})\s*[–-]\s*(\d{2,4})$/.exec(s);
+  if(m){ const y2=m[2].length===2?m[1].slice(0,2)+m[2]:m[2]; return m[1]+" - "+y2+" Season"; }
+  return s?s+" Season":"";
+}
 function renderChrome(){
   const cv=curView();
   $("#tabs").innerHTML = VIEWS.map(v=>`<a href="#${v[0]}" class="${v[0]===cv?"cur":""}">${v[1]}${v[0]==="admin"&&S.admin?" ✓":""}</a>`).join("");
   $("#heroTitle").textContent = S.cfg.name || "Wednesday Cash League";
-  $("#heroMeta").innerHTML = [`Season ${esc(S.cfg.season)}`,`${Object.keys(S.teams).length} teams`].map(c=>`<span class="chip">${c}</span>`).join("");
+  $("#heroMeta").innerHTML = [seasonLabel(S.cfg.season)].map(c=>`<span class="chip">${esc(c)}</span>`).join("");
 }
 
 /* ---------- views ---------- */
@@ -573,7 +587,7 @@ function boardRow(g){
 function resultRow(g){
   const sl=slots(g), w=winnerOf(g), r=S.results[g.id]||{};
   const nm=s=>{ const win=!!(s.id&&w&&s.id===w), lose=!!(s.id&&w&&s.id!==w);
-    return `<span class="lt${win?" won":""}${lose?" lost":""}">${s.id?esc(tn(s.id)):`<span class="ph">${esc(s.ph)}</span>`}</span>`; };
+    return `<span class="lt${win?" won":""}${lose?" lost":""}">${s.id?esc(tn(s.id)):""}</span>`; };
   return `<div class="lrow lres${w?" done":""}"><div class="lg"><span class="bg">Game ${g.num}</span></div><div class="lm">${nm(sl[0])}<span class="lvs">vs</span>${nm(sl[1])}${r.so&&w?`<span class="bso">Shootout · split</span>`:""}</div><div class="lv"><span class="bv">${money(g.value)}</span></div></div>`;
 }
 function scheduleBoard(gs,times){
@@ -591,9 +605,13 @@ function viewStandings(){
   const rows=standings();
   const decided=Object.values(S.games).filter(g=>winnerOf(g));
   const wks=[...new Set(decided.map(g=>g.week))].sort((a,b)=>a-b), lastW=wks.length?wks[wks.length-1]:null;
-  const body=rows.map((t,i)=>`<div class="lrow lres lstand"><div class="lg"><span class="bg">${i+1}</span></div><div class="lteam">${esc(t.name)}</div><div class="lstats hide-s"><div class="ln">${t.gp}</div><div class="ln">${t.w}</div><div class="ln">${t.l}</div><div class="ln">${t.so}</div></div>${formDots(t)}<div class="lv"><span class="bv">${money(t.won)}</span></div></div>`).join("");
+  const prevRank={};
+  if(lastW&&lastW>1){ const prev=standings(lastW-1); if(prev.some(t=>t.gp>0)) prev.forEach((t,i)=>{ prevRank[t.id]=i+1; }); }
+  const moveCell=(id,i)=>{ if(prevRank[id]==null) return `<div class="lmove none">–</div>`; const d=prevRank[id]-(i+1);
+    return d>0?`<div class="lmove up">▲ ${d}</div>`:d<0?`<div class="lmove down">▼ ${-d}</div>`:`<div class="lmove none">–</div>`; };
+  const body=rows.map((t,i)=>`<div class="lrow lres lstand"><div class="lg"><span class="bg">${i+1}</span></div><div class="lteam">${esc(t.name)}</div><div class="lstats hide-s"><div class="ln">${t.gp}</div><div class="ln">${t.w}</div><div class="ln">${t.l}</div><div class="ln">${t.so}</div></div>${formDots(t)}${moveCell(t.id,i)}<div class="lv"><span class="bv">${money(t.won)}</span></div></div>`).join("");
   return banner()+`<div class="card ctr"><div class="hd"><h2>Leaderboard</h2></div>
-    <div class="boardwrap"><div class="board"><div class="lcols lstand"><div>Rank</div><div class="c">Team</div><div class="lstats hide-s"><div class="c">GP</div><div class="c">W</div><div class="c">L</div><div class="c">SO W</div></div><div class="c">Last 5</div><div class="r">Winnings</div></div>${body}<div class="lleg"><span><i class="dot w"></i> Win</span><span><i class="dot l"></i> Loss</span><span><i class="dot s"></i> Shootout loss</span></div></div></div>
+    <div class="boardwrap"><div class="board"><div class="lcols lstand"><div>Rank</div><div class="c">Team</div><div class="lstats hide-s"><div class="c">GP</div><div class="c">W</div><div class="c">L</div><div class="c">SO W</div></div><div class="c">Last 5</div><div class="c">Move</div><div class="r">Winnings</div></div>${body}<div class="lleg"><span><i class="dot w"></i> Win</span><span><i class="dot l"></i> Loss</span><span><i class="dot s"></i> Shootout loss</span></div></div></div>
     ${decided.length?"":`<div class="bd sub">No results yet.</div>`}</div>`;
 }
 function matchRow(g,compact){

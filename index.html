@@ -405,6 +405,22 @@ body,main,body[data-view="report"],body[data-view="report"] main{background:#162
  .rescol .lvs{font-size:10px}
 }
 @media (max-width:1000px){.resgrid{grid-template-columns:1fr}}
+@media (min-width:641px){
+ .resgrid{grid-template-columns:1fr 1fr!important}
+ .rescol .lcols,.rescol .lres{grid-template-columns:60px minmax(0,1fr) 78px;grid-template-areas:none;gap:8px}
+ .rescol .lg,.rescol .lm,.rescol .lv{grid-area:auto}
+ .rescol .lm{flex-wrap:nowrap;gap:6px}
+ .ctr .rescol .lres .lt{flex:1 1 0;width:auto;min-width:0;max-width:none;font-size:13px;padding:0 4px;height:auto;min-height:38px}
+ .rescol .lvs{font-size:10px}
+ .rescol .bg{font-size:11px;padding:3px 8px}
+ .rescol .bv{font-size:14px;padding:3px 9px}
+ .rescol .lcols{display:grid;font-size:12px}
+}
+@media (min-width:1001px){
+ .ctr .rescol .lres .lt{font-size:14px;padding:0 6px}
+ .rescol .lcols,.rescol .lres{grid-template-columns:72px minmax(0,1fr) 88px}
+}
+@media (max-width:640px){.resgrid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>

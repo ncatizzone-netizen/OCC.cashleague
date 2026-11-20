@@ -421,6 +421,22 @@ body,main,body[data-view="report"],body[data-view="report"] main{background:#162
  .rescol .lcols,.rescol .lres{grid-template-columns:72px minmax(0,1fr) 88px}
 }
 @media (max-width:640px){.resgrid{grid-template-columns:1fr}}
+@media (max-width:760px){
+ .lcols.lstand{display:none}
+ .lrow.lstand{grid-template-columns:auto minmax(0,1fr) auto auto;grid-template-areas:"g t m v" "s s s s";gap:6px 10px;padding:8px 12px;min-height:0}
+ .lstand .lg{grid-area:g}
+ .lstand .lteam{grid-area:t;text-align:left;font-size:15px}
+ .lstand .lmove{grid-area:m}
+ .lstand .lv{grid-area:v}
+ .lstand .lform{display:none}
+ .lstand .lstats,.lstand .lstats.hide-s{grid-area:s;display:grid!important;grid-template-columns:repeat(4,1fr);width:100%;border-top:1px solid #e3e5dd;padding-top:6px}
+ .lstand .lstats .ln{font-size:13px;font-weight:700}
+ .lstand .lstats .ln::before{font-weight:400;color:#6b705f}
+ .lstand .lstats .ln:nth-child(1)::before{content:"GP "}
+ .lstand .lstats .ln:nth-child(2)::before{content:"W "}
+ .lstand .lstats .ln:nth-child(3)::before{content:"L "}
+ .lstand .lstats .ln:nth-child(4)::before{content:"SO W "}
+}
 </style>
 </head>
 <body>
